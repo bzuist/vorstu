@@ -4,6 +4,7 @@ import dev.vorstu.db.repositories.entities.auth.BaseRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,18 +13,19 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 
 import javax.sql.DataSource;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
-    @Autowired
-    public void configAuthentication(AuthenticationManagerBuilder auth)
+
+    @Override
+    public void configure(AuthenticationManagerBuilder auth)
             throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource)
                 .passwordEncoder(passwordEncoder())
@@ -51,8 +53,10 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/home/**").permitAll()
                 .antMatchers(HttpMethod.GET ,
                         "/api/admin/**").hasAnyAuthority(BaseRole.SUPER_USER.getRole())
+                .antMatchers(HttpMethod.GET, "/api/user").permitAll()
                 .antMatchers(HttpMethod.POST ,
                         "/api/admin/**").hasAnyAuthority(BaseRole.SUPER_USER.getRole())
+                .antMatchers(HttpMethod.POST, "/api/logout").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()

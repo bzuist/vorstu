@@ -38,17 +38,17 @@ public class Initializer {
 
         authUserRepo.save(admin);
 
-        AuthUserEntity user1 = new AuthUserEntity(true, "user1", "123456",
-                Collections.singleton(new RoleUserEntity("user1", BaseRole.STUDENT))
+        AuthUserEntity student = new AuthUserEntity(true, "student", "123456",
+                Collections.singleton(new RoleUserEntity("student", BaseRole.STUDENT))
         );
 
-        authUserRepo.save(user1);
+        authUserRepo.save(student);
 
-        AuthUserEntity user2 = new AuthUserEntity(true, "user2", "123456",
-                Collections.singleton(new RoleUserEntity("user2", BaseRole.STUDENT))
+        AuthUserEntity teacher = new AuthUserEntity(true, "teacher", "12345678",
+                Collections.singleton(new RoleUserEntity("teacher", BaseRole.TEACHER))
         );
 
-        authUserRepo.save(user2);
+        authUserRepo.save(teacher);
 
     }
 }

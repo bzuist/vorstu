@@ -4,12 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
 public class VorstuApplication {
 
 	private static Initializer initiator;
 
-	@Autowired
+@Autowired
 	public void setInitialLoader (Initializer initiator){
 		VorstuApplication.initiator = initiator;
 	}
